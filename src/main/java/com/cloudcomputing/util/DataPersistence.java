@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 public class DataPersistence {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-    private static final String DB_URL = "jdbc:mysql://localhost/EMP";
+    private static final String DB_URL = "jdbc:mysql://ccproject.cumbn0blorkz.us-east-1.rds.amazonaws.com";
     
     public static boolean loginCheck(String username, String password) {
         if (username == null || password == null) {
@@ -21,12 +21,12 @@ public class DataPersistence {
             Class.forName(JDBC_DRIVER);
 
             System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL);
+            conn = DriverManager.getConnection(DB_URL, "ccproject", "12345678");
             
-            System.out.println("Creating statement...");            
-            PreparedStatement selectPassword = conn.prepareStatement("Select password from USER where username = ?");
+            System.out.println("Creating statement...");  
+            PreparedStatement selectPassword = conn.prepareStatement("Select password from finalproject.user where name = ?");
             selectPassword.setString(1, username);
-            ResultSet rs = selectPassword.executeQuery();
+            ResultSet rs = selectPassword.executeQuery(); 
             while (rs.next()) {
                 String passwordInDatabase = rs.getString("password");
                 if (password.equals(passwordInDatabase)) {

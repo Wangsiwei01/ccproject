@@ -21,42 +21,64 @@ public class ServerVerticle extends AbstractVerticle {
     // to test
     @Override
     public void start() throws Exception {
-        EventBus eb = vertx.eventBus();
-        eb.send("login", "Username Password", res -> {
-            if (res.succeeded()) {
-                if (res.result().body().equals("true")) {
-                    loginResponse = "true";
-                    System.out.println("User authenticated!");
-                }
-                System.out.println("succeeded");
-            } else {
-                System.out.println("not succeeded");
-            }
-            
-        });
+        
+//      HttpServer server = vertx.createHttpServer();
+//      server.requestHandler(req -> {
+//          
+//          String requestType = req.getParam("type");
+//          System.out.println("resquest received: " + requestType);
+//          if ("login".equals(requestType)) {
+//              eventBus.send("login", req.getParam("content"), res -> {
+//              //eventBus.send("login", "abcabc", res -> {
+//                  //if (ar.succeeded()) ?
+//                  if ("true".equals(res.result().toString())) {
+//                      loginResponse = "true";
+//                  }
+//                  else {
+//                      loginResponse = "false";
+//                  }
+//              });
+//          }
+//          req.response()
+//          .putHeader("content-type", "text/plain")
+//          .end(loginResponse);
+//      }).listen(8080);
+        
+//        eb.send("login", "Username Password", res -> {
+//            if (res.succeeded()) {
+//                if (res.result().body().equals("true")) {
+//                    loginResponse = "true";
+//                    System.out.println("User authenticated!");
+//                }
+//                System.out.println("succeeded");
+//            } else {
+//                System.out.println("not succeeded");
+//            }
+//            
+//        });
         
         //use for http
-//        //container.deployVerticle("com.geekcap.vertxexamples.AuditVerticle");
-//        HttpServer server = vertx.createHttpServer();
-//        server.requestHandler(req -> {
-//            String requestType = req.getParam("type");
-//            
-//            if (requestType.equals("login")) {
-//                EventBus eb = vertx.eventBus();
-//                eb.send("login", req.getParam("content"), res -> {
-//                    //if (ar.succeeded()) ?
-//                    if (res.result().toString().equals("true")) {
-//                        loginResponse = "true";
-//                    }
-//                    else {
-//                        loginResponse = "false";
-//                    }
-//                });
-//            }
-//            req.response()
-//            .putHeader("content-type", "text/plain")
-//            .end(loginResponse);
-//        }).listen(8080);
-//        System.out.println("HTTP server started on port 8080");
+
+        HttpServer server = vertx.createHttpServer();
+        server.requestHandler(req -> {
+            String requestType = req.getParam("type");
+            
+            if (requestType.equals("login")) {
+                EventBus eb = vertx.eventBus();
+                eb.send("login", req.getParam("content"), res -> {
+                    //if (ar.succeeded()) ?
+                    if (res.result().toString().equals("true")) {
+                        loginResponse = "true";
+                    }
+                    else {
+                        loginResponse = "false";
+                    }
+                });
+            }
+            req.response()
+            .putHeader("content-type", "text/plain")
+            .end(loginResponse);
+        }).listen(8080);
+        System.out.println("HTTP server started on port 8080");
     }
 }
