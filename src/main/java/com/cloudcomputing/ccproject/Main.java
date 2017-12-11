@@ -7,8 +7,10 @@ public class Main {
         Vertx vertx = Vertx.vertx();
         ServerVerticle server = new ServerVerticle(vertx);
         LoginVerticle login = new LoginVerticle(vertx);
+        SignUpVerticle signup = new SignUpVerticle(vertx);
         try {
             login.start();
+            signup.start();
             Thread.currentThread().sleep(1000);;
             server.start();
             
