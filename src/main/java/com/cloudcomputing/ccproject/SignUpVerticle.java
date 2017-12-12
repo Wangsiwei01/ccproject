@@ -31,6 +31,6 @@ public class SignUpVerticle extends AbstractVerticle {
             System.out.println("SignUpVerticle: I have received a message: " + body);
             boolean result = DataPersistence.UserSignUp(username, password, email, phone);
             message.reply(result);
-        });        
+        });
     }
 }

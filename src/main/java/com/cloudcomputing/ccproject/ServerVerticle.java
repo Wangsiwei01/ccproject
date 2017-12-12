@@ -69,43 +69,49 @@ public class ServerVerticle extends AbstractVerticle {
         HttpServer server = vertx.createHttpServer();
         server.requestHandler(req -> {
             if (req != null) {
-                String requestType = req.getParam("type");
-                if ("login".equals(requestType)) {
-                    eventBus.send("login", req.getParam("content"), res -> {
-                        if(res.succeeded()) {  
-                            if (res.result().body().toString().equals("true")) {
-                                loginResponse = "true";
-                                System.out.println(res.result().body());
-                                System.out.println("User login success!");
-                            } else {
-                                System.out.println("User login failed!");
-                                loginResponse = "false";
+                req.bodyHandler(body -> {
+                    System.out.println("body: " + body.toString());
+                    JSONObject jsonBody = new JSONObject(body.toString());
+                    String requestType = jsonBody.getString("type");
+                    if ("login".equals(requestType)) {
+                        eventBus.send("login", body.toString(), res -> {
+                            if(res.succeeded()) {  
+                                if (res.result().body().toString().equals("true")) {
+                                    loginResponse = "Success";
+                                    System.out.println(res.result().body());
+                                    System.out.println("User login success!");
+                                } else {
+                                    System.out.println("User login failed!");
+                                    loginResponse = "false";
+                                }
                             }
-                        }
-                        req.response()
-                        .putHeader("content-type", "text/plain")
-                        .end(loginResponse);
-                    });
+                            req.response()
+                            .putHeader("content-type", "text/plain")
+                            .end(loginResponse);
+                        });
+                    }
+                    if ("signup".equals(requestType)) {
+                        eventBus.send("signup", body.toString(), res -> {
+                            if(res.succeeded()) {  
+                                if (res.result().body().toString().equals("true")) {
+                                    signupResponse = "Success";
+                                    System.out.println(res.result().body());
+                                    System.out.println("User signup success!");
+                                } else {
+                                    System.out.println("User signup failed!");
+                                    signupResponse = "false";
+                                }
+                            } 
+                            req.response()
+                            .putHeader("content-type", "text/plain")
+                            .end(signupResponse);
+                        });                    
 
-                }
-                if ("signup".equals(requestType)) {
-                    eventBus.send("signup", req.getParam("content"), res -> {
-                        if(res.succeeded()) {  
-                            if (res.result().body().toString().equals("true")) {
-                                signupResponse = "true";
-                                System.out.println(res.result().body());
-                                System.out.println("User signup success!");
-                            } else {
-                                System.out.println("User signup failed!");
-                                signupResponse = "false";
-                            }
-                        } 
-                        req.response()
-                        .putHeader("content-type", "text/plain")
-                        .end(signupResponse);
-                    });                    
-
-                }
+                    }
+                    
+                    
+                });
+                
             }
         }).listen(8080);
         System.out.println("HTTP server started on port 8080");
