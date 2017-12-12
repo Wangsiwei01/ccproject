@@ -20,7 +20,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.nio.entity.NStringEntity;
 
 public class Elasticsearch {
-    private static final String host = ""; // e.g. my-test-domain.us-east-1.es.amazonaws.comd
+    private static final String host = "search-tweetmap-7fveonbkb55njxr2dcra36d7w4.us-east-1.es.amazonaws.com"; // e.g. my-test-domain.us-east-1.es.amazonaws.comd
     
     public static String ElasticIndex(String json) throws IOException {
         String index = "crimedata";
@@ -67,7 +67,7 @@ public class Elasticsearch {
                     "}";
             RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
             HttpEntity entity = new NStringEntity(str, ContentType.APPLICATION_JSON);
-            response = client.performRequest("GET", "/_search", Collections.<String, String>emptyMap(), entity);
+            response = client.performRequest("GET", "/crimedata/current/_search", Collections.<String, String>emptyMap(), entity);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
             String temp;
@@ -120,7 +120,7 @@ public class Elasticsearch {
                     "}";
             RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
             HttpEntity entity = new NStringEntity(str, ContentType.APPLICATION_JSON);
-            response = client.performRequest("GET", "/_search", Collections.<String, String>emptyMap(), entity);
+            response = client.performRequest("GET", "/crimedata/current/_search", Collections.<String, String>emptyMap(), entity);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
             String temp;
