@@ -47,7 +47,7 @@ public class Elasticsearch {
             //response = client.performRequest("GET", "/tweet/_search/{");
             String str = "{\n" + 
                     "  \"from\": 0,\n"+
-                    "  \"size\": 100,\n"+
+                    "  \"size\": 5000,\n"+
                     "  \"query\": {\n" + 
                     "    \"bool\": {\n" + 
                     "      \"must\": {\n" +                               

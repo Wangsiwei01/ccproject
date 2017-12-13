@@ -117,8 +117,17 @@ public class ServerVerticle extends AbstractVerticle {
                                 .end(result);
                             }
                         });                    
-
-                    }                                       
+                    } 
+                    if ("safety".equals(requestType)) {
+                        eventBus.send("safety", body.toString(), res -> {
+                            if(res.succeeded()) {  
+                                String result = res.result().body().toString();
+                                req.response()
+                                .putHeader("content-type", "text/plain")
+                                .end(result);
+                            }
+                        });                    
+                    }  
                 });
                 
             }

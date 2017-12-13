@@ -8,11 +8,13 @@ public class Main {
         ServerVerticle server = new ServerVerticle(vertx);
         LoginVerticle login = new LoginVerticle(vertx);
         SignUpVerticle signup = new SignUpVerticle(vertx);
+        SafetyPredictVerticle safety = new SafetyPredictVerticle(vertx);
         CriminalHistoryVerticle criminalHistory = new CriminalHistoryVerticle(vertx);
         try {
             login.start();
             signup.start();
             criminalHistory.start();
+            safety.start();
             Thread.currentThread().sleep(1000);;
             server.start();
             
