@@ -1,5 +1,6 @@
 package com.cloudcomputing.ccproject;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.cloudcomputing.util.DataPersistence;
@@ -28,9 +29,11 @@ public class CriminalHistoryVerticle extends AbstractVerticle {
             String latitude = jsonobject.getString("latitude");
             String longitude = jsonobject.getString("longitude");
             System.out.println("CriminalHistoryVerticle: I have received a message: " + body);
-            String result = Elasticsearch.ElasticFetchByDistance(latitude, longitude, "200");
-            System.out.println("CriminalHistoryVerticle result: " + result);
-            message.reply(result);
+            String result = Elasticsearch.ElasticFetchByDistance100(latitude, longitude, "0.1");
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONObject("hits").getJSONArray("hits");
+            System.out.println("CriminalHistoryVerticle result: " + jsonArray);
+            message.reply(jsonArray.toString());
         });        
     }
 }

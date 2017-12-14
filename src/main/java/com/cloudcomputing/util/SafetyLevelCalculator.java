@@ -13,6 +13,15 @@ public class SafetyLevelCalculator {
         return weightedResult;
         
     }
+    public static int numbersWithin100(String lat, String lon) {
+        return calculateHistoryNumber(lat, lon, "0.1");
+    }
+    public static int numbersWithin200(String lat, String lon) {
+        return calculateHistoryNumber(lat, lon, "0.2");
+    }
+    public static int numbersWithin300(String lat, String lon) {
+        return calculateHistoryNumber(lat, lon, "0.3");
+    }
     
     public static int calculateHistoryNumber(String lat, String lon, String range) {
         String res = Elasticsearch.ElasticFetchByDistance(lat, lon, range);

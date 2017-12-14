@@ -28,9 +28,14 @@ public class SafetyPredictVerticle extends AbstractVerticle {
             String latitude = jsonobject.getString("latitude");
             String longitude = jsonobject.getString("longitude");
             System.out.println("SafetyPredictVerticle: I have received a message: " + body);
-            double result = SafetyLevelCalculator.calculateWeightedResult(latitude, longitude);
-            System.out.println("SafetyPredictVerticle result: " + result);
-            message.reply(result);
+            JSONObject result = new JSONObject();            
+            result.put("100", SafetyLevelCalculator.numbersWithin100(latitude, longitude));
+            result.put("200", SafetyLevelCalculator.numbersWithin200(latitude, longitude));
+            result.put("300", SafetyLevelCalculator.numbersWithin300(latitude, longitude));
+            double score = SafetyLevelCalculator.calculateWeightedResult(latitude, longitude);
+            result.put("score", score);
+            System.out.println("SafetyPredictVerticle result: " + result.toString());
+            message.reply(result.toString());
         });        
     }
 }
